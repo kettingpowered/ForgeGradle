@@ -71,12 +71,3 @@ jobs:
           KETTINGPASSWORD: ${{ secrets.KETTINGPASSWORD }}
           VERSION: ${{ steps.version_name.outputs.version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Release
-        run: |
-          gh release create "v$VERSION" build/libs/mixingradle-$VERSION.jar build/libs/mixingradle-$VERSION-groovydoc.jar \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${GITHUB_REPOSITORY#*/} v$VERSION" \
-              --generate-notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.version_name.outputs.version }}
