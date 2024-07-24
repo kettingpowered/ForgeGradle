@@ -7,13 +7,16 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.46.0'
 }
 
-version = gradleutils.getTagOffsetBranchVersion('FG_6.0')
+group = 'org.kettingpowered.patched.minecraftforge'
+version = System.getenv("VERSION")
 logger.lifecycle('Version: ' + version + ' Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
+/*
 changelog {
     from '6.0'
     publishAll = false
 }
+*/
 sourceSets {
     common
     mcp
@@ -97,15 +100,15 @@ dependencies {
 gradlePlugin {
     plugins {
         mcp {
-            id = 'net.minecraftforge.gradle.mcp'
+            id = group + '.gradle.mcp'
             implementationClass = 'net.minecraftforge.gradle.mcp.MCPPlugin'
         }
         patcher {
-            id = 'net.minecraftforge.gradle.patcher'
+            id = group + '.gradle.patcher'
             implementationClass = 'net.minecraftforge.gradle.patcher.PatcherPlugin'
         }
         userdev {
-            id = 'net.minecraftforge.gradle'
+            id = group + '.gradle'
             implementationClass = 'net.minecraftforge.gradle.userdev.UserDevPlugin'
         }
     }
@@ -117,10 +120,25 @@ publishing {
         pluginMaven(MavenPublication) {
             // Automated publishing declares the java component for us
 
-            project.changelog.publish(it)
+//            project.changelog.publish(it)
         }
     }
     repositories {
-        maven gradleutils.getPublishingForgeMaven()
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/kettingpowered/ForgeGradle")
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+        maven {
+            name = 'kettingRepo'
+            credentials {
+                username = System.getenv("KETTINGUSERNAME")
+                password = System.getenv("KETTINGPASSWORD")
+            }
+            url = "https://reposilite.c0d3m4513r.com/Ketting/"
+        }
     }
 }
